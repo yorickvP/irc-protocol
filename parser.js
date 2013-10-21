@@ -42,9 +42,9 @@ Parser.prototype._transform = function _transform(input, encoding, done) {
   return done();
 };
 
-var RE_NICK = /^([a-z][a-z0-9\-\[\]\\`^\{\}_]*)(?: |!|@)/i,
-    RE_USER = /^([^ \r\n@]+)/,
-    RE_SERVER = /^((?:[a-z0-9][a-z0-9-]*\.)*(?:[a-z][a-z0-9-]*))/i,
+var RE_NICK = /^([a-zA-Z\x5B-\x60\x7B-\x7D][a-zA-Z\x5B-\x60\x7B-\x7D0-9\-]*)(?=[ @!])/,
+    RE_USER = /^([^\x00\r\n @]+)/, // this one is to spec
+    RE_SERVER = /^([0-9a-fA-F:\.]+|[a-zA-Z0-9\.\-\/]+)/,
     RE_COMMAND = /^(\d{3}|[A-Z]+)/;
 
 Parser.prototype.parse = function parse(text, state) {
@@ -86,6 +86,7 @@ Parser.prototype.parse_prefix = function parse_prefix(text, state) {
   }
 
   if (text[state.offset] !== " ") {
+    console.log(text, state.offset)
     throw new Error("expected whitespace after prefix information");
   }
 
