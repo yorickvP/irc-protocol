@@ -265,4 +265,31 @@ describe("parser", function() {
 
     parser.write(":nick!user@server VERSION a.b.c\r\n");
   });
+  it("should parse weird user/nick/server prefixes", function(done) {
+    parser.on('readable', function() {
+      var message = parser.read();
+
+      if (!message) {
+        return done(Error("no message parsed"));
+      }
+      if (!message.prefix) {
+        return done(Error("prefix not parsed"));
+      }
+
+      if (message.prefix.nick !== "weirdNick0123456789-[]\\`^{}") {
+        return done(Error("invalid nick prefix"));
+      }
+
+      if (message.prefix.user !== "'ï¦TüU\\u0014i¿\\\\°KÙò'") {
+        return done(Error("invalid user prefix"));
+      }
+
+      if (message.prefix.server !== "0:def:dead:beef") {
+        return done(Error("invalid server prefix"));
+      }
+      return done();
+    });
+
+    parser.write(":weirdNick0123456789-[]\\`^{}!'ï¦TüU\\u0014i¿\\\\°KÙò'@0:def:dead:beef :hello VERSION a.b.c\r\n")
+  })
 });
