@@ -29,5 +29,10 @@ Serialiser.prototype.format_prefix = function format_prefix(prefix) {
 };
 
 Serialiser.prototype.format_parameters = function format_parameters(parameters) {
-  return parameters.map(function(e) { return ((e.toString().indexOf(" ") !== -1) ? ":" : "") + e; }).join(" ");
+  parameters = parameters.slice()
+  var last_param = parameters[parameters.length-1]
+  if (last_param.match(/\s/) || last_param.match(/^:/) || last_param === "") {
+    parameters[parameters.length-1] = ":" + last_param
+  }
+  return parameters.join(' ')
 };
