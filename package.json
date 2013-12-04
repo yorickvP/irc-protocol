@@ -22,7 +22,7 @@
   ],
   "author": "Conrad Pankoff <deoxxa@fknsrs.biz> (http://www.fknsrs.biz/)",
   "license": "BSD",
-  "dependencies": {
+  "devDependencies": {
     "mocha": "~1.10.0"
   }
 }
