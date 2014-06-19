@@ -292,4 +292,29 @@ describe("parser", function() {
 
     parser.write(":weirdNick0123456789-[]\\`^{}!'ï¦TüU\\u0014i¿\\\\°KÙò'@0:def:dead:beef :hello VERSION a.b.c\r\n")
   })
+  it("should parse weird-ish user/nick/server prefixes", function(done) {
+    parser.on('readable', function() {
+      var message = parser.read();
+
+      if (!message) {
+        return done(Error("no message parsed"));
+      }
+      if (!message.prefix) {
+        return done(Error("prefix not parsed"));
+      }
+
+      if (message.prefix.nick !== "77CAAD19C") {
+        return done(Error("invalid nick prefix"));
+      }
+
+      if (message.prefix.user !== "~chatzilla") {
+        return done(Error("invalid user prefix"));
+      }
+      if (message.prefix.server !== "some.domain.name") {
+        return done(Error("invalid server prefix"));
+      }
+      return done();
+    });
+    parser.write(":77CAAD19C!~chatzilla@some.domain.name QUIT :Ping timeout: 255 seconds\r\n")
+  })
 });

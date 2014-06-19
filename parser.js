@@ -42,7 +42,7 @@ Parser.prototype._transform = function _transform(input, encoding, done) {
   return done();
 };
 
-var RE_NICK = /^([a-zA-Z\x5B-\x60\x7B-\x7D][a-zA-Z\x5B-\x60\x7B-\x7D0-9\-]*)(?=[ @!])/,
+var RE_NICK = /^([a-zA-Z\x5B-\x60\x7B-\x7D0-9][a-zA-Z\x5B-\x60\x7B-\x7D0-9\-]*)(?=[ @!])/,
     RE_USER = /^([^\x00\r\n @]+)/, // this one is to spec
     RE_SERVER = /^([a-zA-Z0-9\.\-\/:_]+)/,
     RE_COMMAND = /^(\d{3}|[A-Z]+)/;
